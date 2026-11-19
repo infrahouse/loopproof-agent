@@ -14,9 +14,10 @@ must apply resources in the account and the Region found in step 2, with a provi
 
 ## Choosing the root
 
-Look for the root that already manages that account in that Region: its Security Hub or GuardDuty configuration,
-its IAM roles, a directory named after it. Tell it by the provider's settings, not its name alone: an `assume_role`
-whose role ARN names the account, `allowed_account_ids`, a profile, and `region`.
+Look for the root that already manages that account in that Region, in the files git tracks, never a state file:
+its Security Hub or GuardDuty configuration, its IAM roles, a directory named after it. Tell it by the provider's
+settings, not its name alone: an `assume_role` whose role ARN names the account, `allowed_account_ids`, a profile, and
+`region`.
 
 - **One root fits:** use it.
 - **Several fit:** propose the one that holds the account's security configuration, and ask.
@@ -74,8 +75,8 @@ repository's. Leave them as they are.
 - **Each pull request says** what it creates, that it holds no value, and what comes next: after the first, the
   person stores the two values from the onboarding page; after the second, LoopProof checks the account. The second
   lists the excluded accounts, each with the reason the person agreed to.
-- **Read the plan in CI's log,** as text. Never download a saved plan or a plan's JSON from CI: both hold the
-  ExternalId.
+- **Read the plan in CI's log,** as text, once you have checked that the workflow sets no `TF_LOG`: at debug, the log
+  holds both values. Never download a saved plan or a plan's JSON from CI: both hold the ExternalId.
 - **The person merges.** CI's apply is the repository's; never run an apply of your own beside it.
 - **CI's runner applies Part 2,** so it needs curl and HTTPS to LoopProof's API. If it can't reach LoopProof, see
   [when-it-fails.md](when-it-fails.md).

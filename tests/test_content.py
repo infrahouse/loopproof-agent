@@ -53,7 +53,7 @@ def test_no_part_is_copied(path: Path) -> None:
 
 @pytest.mark.parametrize("path", markdown_files(), ids=relative)
 def test_no_command_reads_a_value(path: Path) -> None:
-    """No code block gives an agent a command that reads a value, prints state or a plan as JSON, or targets."""
+    """No code block gives a command that reads a value, a state file or a debug log, prints JSON, or targets."""
     assert not unsafe_commands_in(path.read_text(encoding="utf-8"))
 
 
@@ -126,6 +126,11 @@ def test_a_copied_part_is_caught(text: str) -> None:
         "terraform destroy",
         "TF_VAR_external_id=x terraform apply",
         "TF_LOG=DEBUG terraform plan",
+        "TF_LOG_PROVIDER=DEBUG terraform plan",
+        "cat terraform.tfstate",
+        "grep -r ExternalId security/terraform.tfstate.backup",
+        "jq . errored.tfstate",
+        "tail crash.log",
         "aws iam get-role --role-name loopproof-production-connector",
         "aws iam list-roles",
         "aws iam get-account-authorization-details --filter Role",

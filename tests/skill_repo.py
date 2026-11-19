@@ -473,7 +473,9 @@ UNSAFE_COMMANDS = (
     re.compile(r"\bterraform\s+destroy\b"),
     re.compile(r"(?<![\w-])-target\b"),
     re.compile(r"\bTF_VAR_"),
-    re.compile(r"\bTF_LOG\b"),
+    re.compile(r"\bTF_LOG"),
+    re.compile(r"\.tfstate"),
+    re.compile(r"\bcrash\.log\b"),
     re.compile(r"\baws\s+iam\s+(get-role|list-roles|get-account-authorization-details)(?![\w-])"),
     re.compile(r"\bterraform\s+plan\b[^\n]*-out\b"),
 )
