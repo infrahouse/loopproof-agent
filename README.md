@@ -24,7 +24,8 @@ providers and way of applying; the skill lets your agent fit the two parts into 
 
 - **Handle the ExternalId or the registration token.** The checklist's steps 3 and 4 are yours: you store both values
   with the page's commands. The agent checks that they're stored by the parameters' versions, never by reading them.
-- **Print Terraform's state or a plan as JSON** for the connector's root: JSON shows the ExternalId.
+- **Read Terraform's state, a saved plan or a debug log** of the connector's root, or print a plan as JSON: each
+  shows the ExternalId.
 - **Apply without your go-ahead,** or use `-target`.
 - **Decide which accounts to exclude.** It proposes; you decide.
 - **Sign up, approve LoopProof in Linear, pick the intake team or turn ticketing on.** Those are yours, on LoopProof's
@@ -42,8 +43,8 @@ claude plugin marketplace add infrahouse/loopproof-agent
 claude plugin install loopproof@loopproof-agent
 ```
 
-Inside a session, the same is `/plugin marketplace add infrahouse/loopproof-agent`, then
-`/plugin install loopproof@loopproof-agent`.
+Inside a session, `/plugin marketplace add infrahouse/loopproof-agent` adds the marketplace, and
+`/plugin install loopproof@loopproof-agent` opens the plugin in `/plugin`, where you choose where to install it.
 
 Then, in your Terraform repository, ask Claude to install LoopProof's connector, or run `/loopproof:connector`.
 
