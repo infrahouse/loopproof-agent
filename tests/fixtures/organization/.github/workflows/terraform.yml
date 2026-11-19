@@ -1,0 +1,36 @@
+---
+name: Terraform
+
+on:  # yamllint disable-line rule:truthy
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  terraform:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        root: [management, security, workloads/sandbox]
+    defaults:
+      run:
+        working-directory: ${{ matrix.root }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::123456789012:role/acme-infra-ci
+          aws-region: us-west-2
+      - run: terraform init -input=false
+      - run: terraform plan -input=false
+        if: github.event_name == 'pull_request'
+      - run: terraform apply -input=false -auto-approve
+        if: github.event_name == 'push'
