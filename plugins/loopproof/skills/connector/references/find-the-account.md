@@ -25,7 +25,8 @@ ask the person to run the command and tell you what it answered.
 
 ## Start from the repository
 
-The repository often says it already. Search it for:
+The repository often says it already. Search the files git tracks, with `git grep`, and never a state file, a saved
+plan, `.terraform/` or a log: the [rules](../SKILL.md#the-rules) say why. Look for:
 
 - Terraform that designates Security Hub's delegated administrator, such as an
   `aws_securityhub_organization_admin_account` resource, and the account id it names;
@@ -47,22 +48,23 @@ aws organizations describe-organization
 `describe-organization` answers from any account in an organization, with the management account's id. An error
 saying AWS Organizations isn't in use means there is none: see [Without an organization](#without-an-organization).
 
-Then find Security Hub's delegated administrator. Security Hub makes it the delegated administrator in AWS Organizations
-too, so either command finds it:
+Then find Security Hub's delegated administrator. The answer is this command's, from the organization's management
+account, the only account AWS documents it for:
 
-- From the management account:
+```bash
+aws securityhub list-organization-admin-accounts --feature SecurityHubV2 --region <region>
+```
 
-  ```bash
-  aws securityhub list-organization-admin-accounts --feature SecurityHubV2 --region <region>
-  ```
+`AdminAccounts[].AccountId` with `Status` `ENABLED` is the account. Without `--feature SecurityHubV2`, the command
+answers for Security Hub CSPM, the older service, whose administrator may be another account.
 
-  `AdminAccounts[].AccountId` with `Status` `ENABLED` is the account. Without `--feature SecurityHubV2`, the command
-  answers for Security Hub CSPM, the older service, whose administrator may differ.
-- From the management account, or an account that is a delegated administrator in AWS Organizations:
+Without credentials for the management account, ask the person to run it there and tell you the account, or to tell
+you which account administers the new Security Hub.
 
-  ```bash
-  aws organizations list-delegated-administrators --service-principal securityhub.amazonaws.com
-  ```
+A lead, never the answer: from an account that is a delegated administrator in AWS Organizations,
+`aws organizations list-delegated-administrators --service-principal securityhub.amazonaws.com` lists the accounts
+delegated for Security Hub. AWS's documentation doesn't say whether that is the new Security Hub's administrator or
+Security Hub CSPM's, which may differ. Confirm what it names with the command above, or with the person.
 
 The management account designates the administrator Region by Region. If the answers differ between Regions, or name
 no account, tell the person: that is theirs to settle, before LoopProof is installed.
@@ -104,7 +106,8 @@ Say what you found, and how, in one message, and wait for a yes:
 > LoopProof's connector goes in account `<account>` (`<name>`), the Security Hub delegated administrator, in
 > `<region>`, the home Region, which links `<linked Regions>`. I found it with `<commands>`. Is that right?
 
-If anything was a guess, such as an account the repository names but AWS didn't confirm, say so.
+If anything was a guess, such as an account the repository names, or that only `list-delegated-administrators` named,
+and no command confirmed, say so.
 
 ## Proposing the excluded accounts
 
@@ -112,7 +115,10 @@ The connector's `excluded_accounts` lists accounts whose findings stay out of Lo
 never leave the account. The list is the tenant's decision. Propose one, with a reason for each account, and write
 what the person decides; an empty list is a decision too. It changes later by pull request.
 
-List the organization's accounts, from the management account or a delegated administrator in AWS Organizations:
+Without an organization, the single account is the connector's, and its findings are the only ones: propose an empty
+list, and say so.
+
+In an organization, list its accounts, from the management account or a delegated administrator in AWS Organizations:
 
 ```bash
 aws organizations list-accounts \
