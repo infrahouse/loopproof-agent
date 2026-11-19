@@ -39,10 +39,6 @@ jobs:
 
   plugin-validate:
     runs-on: ["self-hosted", "Linux", "noble"]
-    env:
-      # Claude Code writes its settings under HOME, and npm its cache under its own: both the job's.
-      HOME: ${{ runner.temp }}/home
-      npm_config_cache: ${{ runner.temp }}/npm
     steps:
       - uses: actions/checkout@v4
 
@@ -50,10 +46,16 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Claude Code, at ci/package.json's release
+      # Claude Code writes its settings under HOME, and npm its cache: both the job's. The runner context, and so
+      # runner.temp, isn't available in a job's env, so a step sets them for the steps after it.
+      - name: A home and an npm cache of the job's
         run: |
-          mkdir -p "$HOME"
-          npm ci --prefix ci --no-audit --no-fund
+          mkdir -p "$RUNNER_TEMP/home" "$RUNNER_TEMP/npm"
+          echo "HOME=$RUNNER_TEMP/home" >> "$GITHUB_ENV"
+          echo "npm_config_cache=$RUNNER_TEMP/npm" >> "$GITHUB_ENV"
+
+      - name: Claude Code, at ci/package.json's release
+        run: npm ci --prefix ci --no-audit --no-fund
 
       - name: Claude Code's validator on the marketplace and the plugin
         run: make validate CLAUDE=ci/node_modules/.bin/claude
