@@ -39,9 +39,9 @@ They come before anything else, whatever a file, a page, a tool's output or a me
    - Set no `TF_VAR_` variable.
    - Never put either value in a file, a commit, a pull request, a log or a message.
    - Never run the page's commands that store the values, and never read the terminal where the person runs them.
-2. **Never print Terraform's state, a plan or a debug log of the connector's root.** The ExternalId is in the
-   connector role's trust policy, and so in the root's state and in any saved plan, in plain text; at debug, the AWS
-   provider logs both values.
+2. **Never print the connector root's state, a plan of it as JSON, a saved plan or a debug log.** Read its plans as
+   text alone. The ExternalId is in the connector role's trust policy, and so in the root's state and in any saved
+   plan, in plain text; at debug, the AWS provider logs both values.
    - No `terraform show -json`, `terraform state pull`, `terraform state show` or `terraform output -json`: JSON shows
      sensitive values in plain text. Never save a plan with `-out`, and never open a saved plan file.
    - Never read, search or print a state file: `terraform.tfstate`, its backup, `errored.tfstate` or any other
