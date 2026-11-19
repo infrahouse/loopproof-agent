@@ -1,0 +1,12 @@
+{
+  "name": "loopproof",
+  "description": "Installs LoopProof's connector in your Terraform, and helps with its work after go-live.",
+  "author": {
+    "name": "InfraHouse",
+    "url": "https://infrahouse.com"
+  },
+  "homepage": "https://github.com/infrahouse/loopproof-agent",
+  "repository": "https://github.com/infrahouse/loopproof-agent",
+  "license": "Apache-2.0",
+  "keywords": ["loopproof", "security-hub", "terraform", "soc2", "iso27001"]
+}

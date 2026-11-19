@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "loopproof-agent",
+  "description": "LoopProof's skill for coding agents: installs LoopProof's connector in your Terraform.",
+  "owner": {
+    "name": "InfraHouse",
+    "url": "https://infrahouse.com"
+  },
+  "plugins": [
+    {
+      "name": "loopproof",
+      "source": "./plugins/loopproof",
+      "description": "Installs LoopProof's connector in your Terraform, and helps with its work after go-live."
+    }
+  ]
+}
