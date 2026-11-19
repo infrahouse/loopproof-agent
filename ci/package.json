@@ -1,0 +1,8 @@
+{
+  "name": "loopproof-agent-ci",
+  "private": true,
+  "description": "Claude Code, at a pinned release, for CI's plugin validate. Renovate moves it.",
+  "devDependencies": {
+    "@anthropic-ai/claude-code": "2.1.311"
+  }
+}
