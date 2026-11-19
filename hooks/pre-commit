@@ -1,0 +1,5 @@
+#!/bin/sh
+# The checks CI runs, before each commit: formatting, lint and the tests. Installed by make install-hooks.
+set -e
+make lint
+make test

@@ -1,0 +1,4 @@
+black ~= 26.10
+pylint ~= 4.1
+pytest ~= 9.2
+pyyaml ~= 6.0
