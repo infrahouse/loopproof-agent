@@ -87,4 +87,12 @@ repository's. Leave them as they are.
   Otherwise ask the person to run it and show you the text.
 - Apply only on the person's go-ahead, in the way they choose: they run `terraform apply` themselves, or you run it
   after they have read the plan and told you to.
+- **Nothing in your session can answer Terraform's prompt.** Your shell takes no keyboard input, and neither does a
+  command the person runs through your session, such as with Claude Code's `!`. A plain `terraform apply` there stops
+  at its `yes` and applies nothing. In the session, apply with `-auto-approve`, and only:
+  - on the person's go-ahead for the plan they just read;
+  - with nothing changed in the root since that plan.
+
+  Terraform prints the plan it applies: compare it with the one the person read, and tell them at once if it differs.
+  A person who would rather type `yes` runs a plain `terraform apply` in their own terminal.
 - Commit the parts as the repository commits its changes, through a branch and a pull request if that is its practice.
